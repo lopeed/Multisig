@@ -94,7 +94,6 @@ endif
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrman.h \
-  alert.h \
   allocators.h \
   amount.h \
   base58.h \
@@ -121,7 +120,7 @@ BITCOIN_CORE_H = \
   crypter.h \
   obfuscation.h \
   obfuscation-relay.h \
-  db.h \
+  wallet/db.h \
   eccryptoverify.h \
   ecwrapper.h \
   hash.h \
@@ -147,15 +146,15 @@ BITCOIN_CORE_H = \
   netbase.h \
   net.h \
   noui.h \
-  pow.h \
+  poa.h \
   protocol.h \
   pubkey.h \
   random.h \
   reverselock.h \
   reverse_iterate.h \
-  rpcclient.h \
-  rpcprotocol.h \
-  rpcserver.h \
+  rpc/client.h \
+  rpc/protocol.h \
+  rpc/server.h \
   scheduler.h \
   script/interpreter.h \
   script/script.h \
@@ -172,18 +171,20 @@ BITCOIN_CORE_H = \
   torcontrol.h \
   txdb.h \
   txmempool.h \
-  ui_interface.h \
+  guiinterface.h \
   uint256.h \
   undo.h \
   util.h \
+  util/macros.h \
+  util/threadnames.h \
   utilstrencodings.h \
   utilmoneystr.h \
   utiltime.h \
   validationinterface.h \
   version.h \
-  wallet.h \
-  wallet_ismine.h \
-  walletdb.h \
+  wallet/wallet.h \
+  wallet/wallet_ismine.h \
+  wallet/walletdb.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -200,7 +201,6 @@ libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 libbitcoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_SOURCES = \
   addrman.cpp \
-  alert.cpp \
   bloom.cpp \
   chain.cpp \
   checkpoints.cpp \
@@ -213,16 +213,16 @@ libbitcoin_server_a_SOURCES = \
   miner.cpp \
   net.cpp \
   noui.cpp \
-  pow.cpp \
+  poa.cpp \
   rest.cpp \
-  rpcblockchain.cpp \
-  rpcmasternode.cpp \
-  rpcmasternode-budget.cpp \
-  rpcmining.cpp \
-  rpcmisc.cpp \
-  rpcnet.cpp \
-  rpcrawtransaction.cpp \
-  rpcserver.cpp \
+  rpc/blockchain.cpp \
+  rpc/masternode.cpp \
+  rpc/budget.cpp \
+  rpc/mining.cpp \
+  rpc/misc.cpp \
+  rpc/net.cpp \
+  rpc/rawtransaction.cpp \
+  rpc/server.cpp \
   script/sigcache.cpp \
   timedata.cpp \
   torcontrol.cpp \
@@ -268,7 +268,7 @@ libbitcoin_wallet_a_SOURCES = \
   bip38.cpp \
   obfuscation.cpp \
   obfuscation-relay.cpp \
-  db.cpp \
+  wallet/db.cpp \
   crypter.cpp \
   swifttx.cpp \
   masternode.cpp \
@@ -277,12 +277,12 @@ libbitcoin_wallet_a_SOURCES = \
   masternode-sync.cpp \
   masternodeconfig.cpp \
   masternodeman.cpp \
-  rpcdump.cpp \
-  rpcwallet.cpp \
+  wallet/rpcdump.cpp \
+  wallet/rpcwallet.cpp \
   kernel.cpp \
-  wallet.cpp \
-  wallet_ismine.cpp \
-  walletdb.cpp \
+  wallet/wallet.cpp \
+  wallet/wallet_ismine.cpp \
+  wallet/walletdb.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
@@ -365,11 +365,12 @@ libbitcoin_util_a_SOURCES = \
   chainparamsbase.cpp \
   clientversion.cpp \
   random.cpp \
-  rpcprotocol.cpp \
+  rpc/protocol.cpp \
   sync.cpp \
   uint256.cpp \
   util.cpp \
   utilstrencodings.cpp \
+  util/threadnames.cpp \
   utilmoneystr.cpp \
   utiltime.cpp \
   $(BITCOIN_CORE_H)
@@ -383,7 +384,7 @@ endif
 # cli: shared between dapscoin-cli and dapscoin-qt
 libbitcoin_cli_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_SOURCES = \
-  rpcclient.cpp \
+  rpc/client.cpp \
   $(BITCOIN_CORE_H)
 
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
